@@ -1,6 +1,15 @@
+// const express = require('express');
+// const pdfService = require('./service/pdf-service');
+// const router = require('./routes')
+// import './module-name'
+
+// import express from 'express';
+// import router from './routes';
+// import { createRequire } from "module";
+// const require = createRequire(import.meta.url);
+
 const express = require('express');
-const pdfService = require('./service/pdf-service');
-const router = require('./routes')
+ const router = require('./routes')
 
 const app = express();
 app.use(express.json());

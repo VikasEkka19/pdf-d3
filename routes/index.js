@@ -2,7 +2,7 @@ const express = require('express');
 const pdfService = require('../service/pdf-service');
 
 // import express from 'express';
-// import {buildPDF} from '../service/pdf-service';
+// import pdfService from '../service/pdf-service';
 
 const router = express.Router();
 router.get('/payslip', (req,res) => {
