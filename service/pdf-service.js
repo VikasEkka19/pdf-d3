@@ -1,38 +1,43 @@
+const { createCanvas, loadImage } = require('canvas');
+var SVGtoPNG = require('svg-to-png');
+var fs = require('fs');
+var Canvas = require('canvas');
+// var svg2png = require("svg2png");
 PDFDocument = require('pdfkit');
 // const d3 = require("https://cdn.skypack.dev/d3@7");
-const d3 = require('d3');
+// const d3 = require('d3');
 
 // import PDFDocument from 'pdfkit';
 // import * as d3 from "https://cdn.skypack.dev/d3@7";
 
-function drawChart() {
-    const data = [1,2,3,4]
-    const svgWidth = 1000;
-    const svgHeight = 500;
-    const barPadding = 5;
-    const barWidth = svgWidth / data.data.length;
+// function drawChart() {
+//     const data = [1,2,3,4]
+//     const svgWidth = 1000;
+//     const svgHeight = 500;
+//     const barPadding = 5;
+//     const barWidth = svgWidth / data.data.length;
 
-    let svg = d3.select("svg");
-    let width = svg
-        .attr("width", svgWidth)
-        .attr("height", svgHeight);
+//     let svg = d3.select("svg");
+//     let width = svg
+//         .attr("width", svgWidth)
+//         .attr("height", svgHeight);
 
-    svg
-        .selectAll("rect")
-        .data(data.data)
-        .enter()
-        .append("rect")
-        .attr("y", (d) => svgHeight - d)
-        .attr("height", (d) => d)
-        .attr("width", () => barWidth - barPadding)
-        .attr("transform", (d, i) => {
-            let translate = [barWidth * i, 0];
-            return `translate(${translate})`;
-        })
-        .style("fill", "steelblue");
+//     svg
+//         .selectAll("rect")
+//         .data(data.data)
+//         .enter()
+//         .append("rect")
+//         .attr("y", (d) => svgHeight - d)
+//         .attr("height", (d) => d)
+//         .attr("width", () => barWidth - barPadding)
+//         .attr("transform", (d, i) => {
+//             let translate = [barWidth * i, 0];
+//             return `translate(${translate})`;
+//         })
+//         .style("fill", "steelblue");
 
-        return svg;
-}
+//         return svg;
+// }
 
 function buildPDF(dataCallback,endCallback) {
     const doc = new PDFDocument();
@@ -49,7 +54,9 @@ function buildPDF(dataCallback,endCallback) {
     .fontSize(20).text('JUN 2022', 138, 45)
     .fillColor('black')
     .fontSize(12).text('WALKOVER WEB SOLUTIONS PVT. LTD.',45,80)
-    .image(drawChart(), 500, 55, {fit: [60, 60]})
+    .image('images/walkLogo.png', 500, 55, {fit: [60, 60]})
+    // .path('../images/headphone.svg')  // In this we will give svg file
+    // .stroke()   
     .fontSize(8).text('405-406, CAPT. C.S. NAIDU ARCADE, NEAR GREATER KAILASH HOSPITAL, OLD PALASIA,',45,100)
     .fontSize(8).text('INDORE',45,110)
     .fontSize(8).text('INDORE MADHYA PRADESH 452001',45,120)
@@ -126,4 +133,39 @@ function buildPDF(dataCallback,endCallback) {
     doc.end();
 }
 
-module.exports = { buildPDF };
+// function convertSVG(path) {
+// svg2png(path, "output.png", function (err) {
+//     if (err) throw err;
+//     console.log("Converted successfully!");
+// });
+// }
+
+function convertSVG() {
+loadImage('images/headphone.svg').then((image) => {
+    const canvas = createCanvas(image.width, image.height);
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(image, 0, 0, image.width, image.height);
+    const buffer = canvas.toBuffer();
+    fs.writeFileSync('output.png', buffer);
+    console.log("Converted successfully!");
+});
+}
+
+// function convertSVG(){
+
+//     SVGtoPNG.convert('headphone.svg', 'image.png')
+//     .then(() => {
+//       var doc = new PDFDocument();
+//       doc.pipe(fs.createWriteStream('output.pdf'));
+//       doc.image('image.png', 0, 0, {width: 500});
+//       doc.end();
+//       console.log('Converted successfully!');
+//     })
+//     .catch((e) => {
+//       console.error(e);
+//     });
+// }
+
+module.exports = { buildPDF, 
+    convertSVG
+};
